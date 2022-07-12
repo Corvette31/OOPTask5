@@ -149,6 +149,7 @@ namespace OOPTask5
             }
 
             findBooks = FindByTitle(userInput);
+
             if (findBooks.Count > 0)
             {
                 Console.WriteLine("Найденные книги:");
@@ -157,6 +158,7 @@ namespace OOPTask5
             }
 
             findBooks = FindByYearOfRelease(userInput);
+
             if (findBooks.Count > 0)
             {
                 Console.WriteLine("Найденные книги:");
