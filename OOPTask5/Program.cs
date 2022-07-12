@@ -133,7 +133,7 @@ namespace OOPTask5
 
         public void FindBooks()
         {
-            List<Book> findBooks = new List<Book>();
+            List<Book> findBooks;
             string userInput;
 
             Console.Write("Укажите автора, или название, или год выхода книги: ");
