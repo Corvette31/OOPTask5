@@ -51,7 +51,7 @@ namespace OOPTask5
         public string Title { get; private set; }
         public int YearOfRelease { get; private set; }
 
-        public  Book(string author, string title, int yearOfRelease, int articleNumber)
+        public Book(string author, string title, int yearOfRelease, int articleNumber)
         {
             Author = author;
             Title = title;
@@ -67,13 +67,13 @@ namespace OOPTask5
 
     class Library
     {
-        private List <Book> _books;
+        private List<Book> _books;
         private int _nextArticleNumber;
 
         public Library()
         {
             _nextArticleNumber = 0;
-            _books = new List <Book> ();
+            _books = new List<Book>();
             _books.Add(new Book("Мюллер", "C# для чайников", 2019, ++_nextArticleNumber));
             _books.Add(new Book("Прайс", "C# 7 и .NET Core. Кросс-платформенная разработка для профессионалов", 2018, ++_nextArticleNumber));
             _books.Add(new Book("Бонд", "Unity и C#. Геймдев от идеи до реализации", 2019, ++_nextArticleNumber));
@@ -90,7 +90,7 @@ namespace OOPTask5
             string author = Console.ReadLine();
 
             Console.Write("Введите год выхода книги: ");
-            int yearOfRelease = GetNuberFromUser();
+            int yearOfRelease = GetNuber();
 
             _books.Add(new Book(author, title, yearOfRelease, ++_nextArticleNumber));
             Console.WriteLine("Книга добавлена");
@@ -100,7 +100,7 @@ namespace OOPTask5
         {
             Console.Write("Введите артикульный номер книги которую нужно удалить: ");
 
-            int articleNumber = GetNuberFromUser();
+            int articleNumber = GetNuber();
 
             foreach (var book in _books)
             {
@@ -123,120 +123,105 @@ namespace OOPTask5
             }
         }
 
-        public void ShowBooks(List<Book> books)
-        {
-            foreach (var book in books)
-            {
-                book.ShowInfo();
-            }
-        }
-
         public void FindBooks()
         {
-            List<Book> findBooks;
-            string userInput;
+            Console.Write("Укажите критерий для поиска :\n1 - по автору\n2 - по названию\n3 - по год выхода книги:");
 
-            Console.Write("Укажите автора, или название, или год выхода книги: ");
-            userInput = Console.ReadLine();
-
-            findBooks = FindByAuthor(userInput);
-
-            if (findBooks.Count > 0)
+            switch (GetNuber())
             {
-                Console.WriteLine("Найденные книги:");
-                ShowBooks(findBooks);
-                return;
+                case 1:
+                    FindByAuthor();
+                    break;
+                case 2:
+                    FindByTitle();
+                    break;
+                case 3:
+                    FindByYearOfRelease();
+                    break;
+                default:
+                    Console.WriteLine("Ошибка");
+                    break;
             }
-
-            findBooks = FindByTitle(userInput);
-
-            if (findBooks.Count > 0)
-            {
-                Console.WriteLine("Найденные книги:");
-                ShowBooks(findBooks);
-                return;
-            }
-
-            findBooks = FindByYearOfRelease(userInput);
-
-            if (findBooks.Count > 0)
-            {
-                Console.WriteLine("Найденные книги:");
-                ShowBooks(findBooks);
-                return;
-            }
-
-            Console.WriteLine("Книги не найдены:");
         }
 
-        private List<Book> FindByAuthor(string author)
+        private void FindByAuthor()
         {
-            List<Book> findBooks = new List<Book>();
+            int counter = 0;
+
+            Console.Write("Введите автора книги:");
+            string userInput = Console.ReadLine();
 
             foreach (var book in _books)
             {
-                if (book.Author.ToLower() == author.ToLower())
+                if (book.Author.ToLower() == userInput.ToLower())
                 {
-                    findBooks.Add(book);  
+                    book.ShowInfo();
+                    counter++;
                 }
             }
 
-            return findBooks;
+            if (counter == 0)
+            {
+                Console.WriteLine("Не найдено!");
+            }
         }
 
-        private List<Book> FindByTitle(string title)
+        private void FindByTitle()
         {
-            List<Book> findBooks = new List<Book>();
+            int counter = 0;
+
+            Console.Write("Введите название книги:");
+            string userInput = Console.ReadLine();
 
             foreach (var book in _books)
             {
-                if (book.Title.ToLower() == title.ToLower())
+                if (book.Title.ToLower() == userInput.ToLower())
                 {
-                    findBooks.Add(book);
+                    book.ShowInfo();
+                    counter++;
                 }
             }
 
-            return findBooks;
+            if (counter == 0)
+            {
+                Console.WriteLine("Не найдено!");
+            }
+
         }
 
-        private List<Book> FindByYearOfRelease(string userInput)
+        private void FindByYearOfRelease()
         {
-            List<Book> findBooks = new List<Book>();
-            int yearOfRelease = GetNuberFromUser(userInput);
+            int counter = 0;
+
+            Console.Write("Введите год релиза книги:");
+            int yearOfRelease = GetNuber();
 
             foreach (var book in _books)
             {
                 if (book.YearOfRelease == yearOfRelease)
                 {
-                    findBooks.Add(book);
+                    book.ShowInfo();
+                    counter++;
                 }
             }
 
-            return findBooks;
+            if (counter == 0)
+            {
+                Console.WriteLine("Не найдено!");
+            }
         }
 
-        private int GetNuberFromUser()
+        private int GetNuber()
         {
-            int yearOfRelease;
+            int number;
 
-            if (int.TryParse(Console.ReadLine(), out yearOfRelease) == false)
+            if (int.TryParse(Console.ReadLine(), out number) == false)
             {
                 Console.WriteLine("Не корректное значение!");
             }
 
-            return yearOfRelease;
+            return number;
         }
 
-        private int GetNuberFromUser(string userInput)
-        {
-            int yearOfRelease;
-
-            if (int.TryParse(userInput, out yearOfRelease) == false)
-            {
-                Console.WriteLine("Не корректное значение!");
-            }
-
-            return yearOfRelease;
-        }
     }
 }
